@@ -8,7 +8,7 @@ marp: true
 ## メンバー
 
 - k_taira
-- ナカムラ
+- enumura
 
 ---
 
