@@ -1,25 +1,14 @@
 "use strict";
 
-const { portNumber } = require("../environment.json");
-
-const { sendReplyMessage } = require("./lineApi/reply.js");
-const { sendPushMessage } = require("./lineApi/push.js");
-const express = require("express");
-const app = express();
-const bodyParser = require('body-parser');
+const { sendReplyMessage } = require("../source/lineApi/reply.js");
+const { sendPushMessage } = require("../source/lineApi/push.js");
 const fs = require("fs").promises;
-const { pickupOutsideReferenceRangeEntries } = require("./healthCheckXmlParser.js")
-const { entriesToComponent } = require("./healthCheckComponents.js")
+const { pickupOutsideReferenceRangeEntries } = require("../source/healthCheckXmlParser.js")
+const { entriesToComponent } = require("../source/healthCheckComponents.js")
 
-app.use(bodyParser.urlencoded({ "extended": true }));
-app.use(bodyParser.json());
-
-app.listen(portNumber, () => console.log(`Example app listening at http://localhost:${portNumber}`));
-
-app.get("/", (_, response) => response.sendStatus(200));
-app.post("/webhook", async (request, response) =>
-  await Promise.all(request.body.events.map(handleEvent)).then(_ => response.sendStatus(200))
-);
+module.exports = async (context, request) =>
+  await Promise.all(request.body.events.map(handleEvent))
+  .then(_ => context.response = {"status": 200});
 
 const handleEvent = async event => {
   switch (event.type) {

@@ -1,12 +1,11 @@
 "use strict";
 
-const { channelAccessToken } = require("../../environment.json");
 const axios = require("axios");
 
 const headers = {
   "headers": {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${channelAccessToken}`,
+    "Authorization": `Bearer ${process.env.CHANNEL_ACCESS_TOKEN}`,
   },
 };
 
